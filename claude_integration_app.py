@@ -5,6 +5,7 @@ import anthropic
 app = Flask(__name__)
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
+app.logger.info(f"ANTHROPIC_API_KEY loaded: {ANTHROPIC_API_KEY[:5]}...{ANTHROPIC_API_KEY[-5:]}" if ANTHROPIC_API_KEY else "ANTHROPIC_API_KEY not found")
 
 @app.route('/claude_message', methods=['POST'])
 def claude_message():
