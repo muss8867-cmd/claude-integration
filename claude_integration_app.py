@@ -4,8 +4,12 @@ import anthropic
 
 app = Flask(__name__)
 
-ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
-app.logger.info(f"ANTHROPIC_API_KEY loaded: {ANTHROPIC_API_KEY[:5]}...{ANTHROPIC_API_KEY[-5:]}" if ANTHROPIC_API_KEY else "ANTHROPIC_API_KEY not found")
+try:
+    with open("api_key.txt", "r") as f:
+        ANTHROPIC_API_KEY = f.read().strip()
+except FileNotFoundError:
+    ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
+app.logger.info(f"ANTHROPIC_API_KEY loaded: {ANTHROPIC_API_KEY[:5]}...{ANTHROPIC_API_KEY[-5:]}" if ANTHROPIC_API_KEY else "ANTHROPIC_API_KEY not found (from file or env)")
 
 @app.route('/claude_message', methods=['POST'])
 def claude_message():
@@ -19,7 +23,7 @@ def claude_message():
         return jsonify({"error": "No message provided"}), 400
 
     try:
-        api_key_to_use = os.environ.get("ANTHROPIC_API_KEY")
+        api_key_to_use = ANTHROPIC_API_KEY
         app.logger.info(f"API Key being used: {api_key_to_use[:5]}...{api_key_to_use[-5:]}" if api_key_to_use else "API Key is None")
         client = anthropic.Anthropic(api_key=api_key_to_use)
         response = client.messages.create(
