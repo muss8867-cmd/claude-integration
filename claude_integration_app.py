@@ -20,7 +20,7 @@ def claude_message():
     try:
         client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
         response = client.messages.create(
-            model="claude-3-opus-20240229", # You can choose a different model if needed
+            model="claude-opus-4-8", # Updated to a newer model
             max_tokens=1024,
             messages=[
                 {"role": "user", "content": user_message}
