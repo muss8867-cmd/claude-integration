@@ -19,7 +19,9 @@ def claude_message():
         return jsonify({"error": "No message provided"}), 400
 
     try:
-        client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+        api_key_to_use = os.environ.get("ANTHROPIC_API_KEY")
+        app.logger.info(f"API Key being used: {api_key_to_use[:5]}...{api_key_to_use[-5:]}" if api_key_to_use else "API Key is None")
+        client = anthropic.Anthropic(api_key=api_key_to_use)
         response = client.messages.create(
             model="claude-opus-4-8", # Updated to a newer model
             max_tokens=1024,
