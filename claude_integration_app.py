@@ -27,7 +27,7 @@ def claude_message():
         app.logger.info(f"API Key being used: {api_key_to_use[:5]}...{api_key_to_use[-5:]}" if api_key_to_use else "API Key is None")
         client = anthropic.Anthropic(api_key=api_key_to_use)
         response = client.messages.create(
-            model="claude-opus-4-8", # Updated to a newer model
+            model="claude-sonnet-4-6", # Updated to a generally available model for testing
             max_tokens=1024,
             messages=[
                 {"role": "user", "content": user_message}
