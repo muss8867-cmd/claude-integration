@@ -28,7 +28,9 @@ def claude_message():
         )
         return jsonify({"claude_response": response.content[0].text}), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        import traceback
+        app.logger.error("Error in claude_message: %s", traceback.format_exc())
+        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
